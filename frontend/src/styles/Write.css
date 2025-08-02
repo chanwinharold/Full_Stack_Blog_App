@@ -14,10 +14,11 @@
     width: 100%;
     height: 40px;
     outline: none;
+    padding-inline: 2rem;
 }
 
 .textarea-container {
-    height: 480px;
+    height: 450px;
     border: none;
 
     .textarea { height: 100%;}
