@@ -1,8 +1,6 @@
-import "../styles/Home.css"
-import {Link} from "react-router";
+import "../styles/Menu.css"
 
-function Home() {
-
+function Menu() {
     const Posts = [
         {
             id: 1,
@@ -31,27 +29,19 @@ function Home() {
     ];
 
     return (
-        <main className="home-container">
-            <div className="home-posts">
-                {
-                    Posts.map(post => (
-                        <section key={post.id}>
-                            <div className="post-image">
-                                <img srcSet={post.img} alt=""/>
-                            </div>
-                            <div className="post-content">
-                                <Link to={`post/${post.id}`}>
-                                    <h2>{post.title}</h2>
-                                </Link>
-                                <p>{post.desc}</p>
-                                <button>Read More</button>
-                            </div>
-                        </section>
-                    ))
-                }
-            </div>
-        </main>
+        <section className="menu-container">
+            <h2>Others posts you may like</h2>
+            {
+                Posts.map(post => (
+                    <div key={post.id} className="post-container">
+                        <img srcSet={post.img} alt=""/>
+                        <h3>{post.title}</h3>
+                        <button>Read More</button>
+                    </div>
+                ))
+            }
+        </section>
     )
 }
 
-export default Home
+export default Menu
