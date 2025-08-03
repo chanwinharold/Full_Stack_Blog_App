@@ -25,7 +25,7 @@
 }
 .form button {
     font-weight: bold;
-    &:hover {
+    &:hover:not(:disabled) {
         cursor: pointer;
         color: var(--color-neutral-100);
         background-color: var(--color-main-500);
