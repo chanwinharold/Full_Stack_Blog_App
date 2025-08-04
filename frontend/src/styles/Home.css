@@ -33,7 +33,7 @@
     }
 }
 .post-content button {
-    width: fit-content;
+    width: fit-content; height: 40px;
     padding-inline: 2rem;
     border: none;
     border-radius: 0;

@@ -50,16 +50,16 @@ function Layout() {
     )
 }
 
-export const UsernameContext = createContext()
+export const UserContext = createContext()
 
 function App() {
     const [currentUser, setCurrentUser] = useState( JSON.parse(localStorage.getItem("resData")) || null )
 
     return (
         <div className="app-container">
-            <UsernameContext.Provider value={[currentUser, setCurrentUser]}>
+            <UserContext.Provider value={[currentUser, setCurrentUser]}>
                 <RouterProvider router={router}/>
-            </UsernameContext.Provider>
+            </UserContext.Provider>
         </div>
     )
 }

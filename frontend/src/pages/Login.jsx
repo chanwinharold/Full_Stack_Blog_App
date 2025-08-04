@@ -2,10 +2,10 @@ import "../styles/Form.css"
 import {useState, useContext} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
-import {UsernameContext} from "../App.jsx";
+import {UserContext} from "../App.jsx";
 
 function Login({}) {
-    const [ , setCurrentUser] = useContext(UsernameContext);
+    const [ , setCurrentUser] = useContext(UserContext);
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState("")
     const [inputs, setInputs] = useState({
@@ -25,6 +25,7 @@ function Login({}) {
         e.preventDefault()
         try {
             const res = await axios.post("/api/auth/login", inputs)
+
             localStorage.setItem("resData", JSON.stringify(res.data))
             setCurrentUser(JSON.parse(localStorage.getItem("resData")))
 

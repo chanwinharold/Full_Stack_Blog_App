@@ -12,7 +12,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/auth", userRoutes)
-app.use("/", postRoutes)
+app.use("/posts", postRoutes)
 app.use((req, res) => {
     res.status(404).json({message: "Route Introuvable !!!"})
 })
