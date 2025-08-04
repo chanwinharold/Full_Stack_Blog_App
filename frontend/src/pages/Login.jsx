@@ -1,15 +1,17 @@
 import "../styles/Form.css"
-import {useState} from "react";
+import {useState, useContext} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
+import {UsernameContext} from "../App.jsx";
 
-function Login() {
+function Login({}) {
+    const [ , setCurrentUser] = useContext(UsernameContext);
+    const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState("")
     const [inputs, setInputs] = useState({
         username : "",
         password : ""
     });
-    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const {name, value} = e.target
@@ -23,8 +25,10 @@ function Login() {
         e.preventDefault()
         try {
             const res = await axios.post("/api/auth/login", inputs)
+            localStorage.setItem("resData", JSON.stringify(res.data))
+            setCurrentUser(JSON.parse(localStorage.getItem("resData")))
+
             navigate("/")
-            console.log(res)
         } catch (error) {
             setErrorMessage("Your username or password is incorrect !")
         }

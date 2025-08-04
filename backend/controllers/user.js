@@ -25,7 +25,7 @@ exports.register = (req, res) => {
                 blog_db.query(
                     query_create_new_user,
                     [req.body.username, req.body.email, hash],
-                    (error, data) => {
+                    (error, ) => {
                         if (error) return res.status(500).json(error)
                         return res.status(201).json({message: "User created successfully !"})
                     })
@@ -48,6 +48,7 @@ exports.login = (req, res) => {
                     res.status(400).json({message: "Your username or password is incorrect !"})
                 } else {
                     res.status(200).json({
+                        username: data[0].username,
                         token: jwt.sign(
                             {userId: data[0].id},
                             process.env.KEY_SECRET,
@@ -58,8 +59,4 @@ exports.login = (req, res) => {
             })
         } else return res.status(404).json({message: "Your username or password is incorrect !"})
     })
-}
-
-exports.logout = (req, res) => {
-    res.status(200).json({message: "Déconnexion réussie"})
 }

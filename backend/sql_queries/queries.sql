@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Posts (
     img VARCHAR(255) NOT NULL,
     date DATETIME NOT NULL,
     userId INT NOT NULL,
-    FOREIGN KEY (userId) REFERENCES Users (id)
+    FOREIGN KEY (userId) REFERENCES Users (id) ON DELETE CASCADE
 );
 
 

@@ -1,8 +1,15 @@
 import "../styles/Navbar.css"
 import {Link} from "react-router";
+import {UsernameContext} from "../App.jsx";
+import {useContext} from "react";
 
 function Navbar() {
     const Links = ["art", "science", "technology", "cinema", "design", "food"]
+    const [currentUser, ] = useContext(UsernameContext)
+
+    const handleClick = () => {
+        localStorage.removeItem("resData")
+    }
 
     return (
         <div className="navbar-container">
@@ -19,9 +26,9 @@ function Navbar() {
                     }
                 </ul>
                 <ul className="navbar-others">
-                    <li>John</li>
-                    <li>Logout</li>
-                    <li><Link to="/write">Write</Link></li>
+                    <li>{ currentUser ? currentUser.username : "" }</li>
+                    <li>{ currentUser ? (<Link to={`/login`} onClick={handleClick}>Logout</Link>) : (<Link to={`/login`}>Login</Link>) }</li>
+                    <li>{ currentUser ? (<Link to="/write">Write</Link>) : null}</li>
                 </ul>
             </nav>
         </div>

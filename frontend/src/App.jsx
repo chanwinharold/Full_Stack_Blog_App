@@ -9,6 +9,7 @@ import Write from "./pages/Write.jsx";
 
 import Navbar from "./components/Navbar.jsx"
 import Footer from "./components/Footer.jsx"
+import {createContext, useState} from "react";
 
 const router = createBrowserRouter([
     {
@@ -49,11 +50,16 @@ function Layout() {
     )
 }
 
+export const UsernameContext = createContext()
+
 function App() {
+    const [currentUser, setCurrentUser] = useState( JSON.parse(localStorage.getItem("resData")) || null )
 
     return (
         <div className="app-container">
-            <RouterProvider router={router}/>
+            <UsernameContext.Provider value={[currentUser, setCurrentUser]}>
+                <RouterProvider router={router}/>
+            </UsernameContext.Provider>
         </div>
     )
 }
