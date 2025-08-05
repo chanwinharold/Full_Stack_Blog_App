@@ -65,8 +65,10 @@ function Home() {
                                 <Link to={`post/${post.id}`}>
                                     <h2>{post.title}</h2>
                                 </Link>
-                                <p>{post.description}</p>
-                                <button>Read More</button>
+                                <p>{String(post.description).slice(0, 400)}...</p>
+                                <Link to={`post/${post.id}`}>
+                                    <button>Read More</button>
+                                </Link>
                             </div>
                         </section>
                     ))

@@ -42,7 +42,7 @@
 }
 
 
-.item-one input::file-selector-button {
+.item-one input::file-selector-button, button {
     cursor: pointer;
     width: fit-content;
     height: 40px;
@@ -55,6 +55,9 @@
     &::file-selector-button {
         background-color: var(--color-secondary-500);
     }
+}
+.item-one button:hover {
+    background-color: var(--color-secondary-500);
 }
 
 .radio-container {
