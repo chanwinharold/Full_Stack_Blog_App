@@ -19,7 +19,7 @@
 
 .post-content {
     flex: 3;
-    display: grid;
+    display: grid; gap: 1rem;
     justify-content: space-around;
 }
 .post-content a {

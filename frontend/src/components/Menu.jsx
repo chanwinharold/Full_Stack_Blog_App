@@ -1,15 +1,13 @@
 import "../styles/Menu.css"
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../App.jsx";
-import {Link, useLocation, useNavigate} from "react-router";
+import {Link} from "react-router";
 import axios from "axios";
 
 function Menu({category, postId}) {
 
     const [Posts, setPost] = useState([])
     const [currentUser, ] = useContext(UserContext)
-
-    const location = useLocation()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,7 +32,7 @@ function Menu({category, postId}) {
                     (Number(post.id) !== Number(postId))
                     && (
                         <div key={post.id} className="post-container">
-                            <img srcSet={post.img} alt=""/>
+                            <img srcSet={`/uploads/${post?.img}`} alt=""/>
                             <h3>{post.title}</h3>
                             <Link to={`/post/${post.id}`}>
                                 <button>Read More</button>
