@@ -49,7 +49,7 @@ Une application de blog full‑stack, permettant de créer, mettre à jour et su
 **Cloner le dépôt :**
 
 ```bash
-git clone [https://github.com/chanwinharold/Full_Stack_Blog_App.git](https://github.com/chanwinharold/Full_Stack_Blog_App.git)
+git clone https://github.com/chanwinharold/Full_Stack_Blog_App.git
 cd Full_Stack_Blog_App
 ```
 
