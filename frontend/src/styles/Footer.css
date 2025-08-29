@@ -1,0 +1,17 @@
+.footer-container {
+    align-self: end;
+    height: fit-content;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 2rem;
+    border-top: 2px solid var(--color-neutral-900);
+
+}
+.footer-container span {
+    display: inline-flex;
+    gap: 1rem;
+}
+
+.footer-social svg path {
+    color: var(--color-neutral-900);
+}

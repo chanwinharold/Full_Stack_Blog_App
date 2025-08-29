@@ -1,0 +1,49 @@
+:root {
+    @media (prefers-color-scheme: light) {
+        /*main light mode colors*/
+        --color-main: 229, 100%;
+        --color-main-100: hsl(229, 100%, 90%);
+        --color-main-500: hsl(229, 100%, 60%);
+        --color-main-900: hsl(229, 100%, 10%);
+        /*neutral light mode colors*/
+        --color-neutral-100: hsl(0, 0%, 100%);
+        --color-neutral-200: hsl(0, 0%, 75%);
+        --color-neutral-800: hsl(0, 0%, 25%);
+        --color-neutral-900: hsl(229, 100%, 15%);  }
+
+    @media (prefers-color-scheme: dark) {
+        /*main dark mode colors*/
+        --color-main: 229, 100%;
+        --color-main-900: hsl(229, 100%, 90%);
+        --color-main-500: hsl(229, 100%, 60%);
+        --color-main-100: hsl(229, 100%, 10%);
+        /*neutral dark mode colors*/
+        --color-neutral-900: hsl(0, 0%, 100%);
+        --color-neutral-800: hsl(0, 0%, 75%);
+        --color-neutral-200: hsl(0, 0%, 25%);
+        --color-neutral-100: hsl(0, 0%, 10%);  }
+
+    /*secondary colors*/
+    --color-secondary: 181, 77%;
+    --color-secondary-500: 	hsl(181, 77%, 49%);
+    /*error state color*/
+    --color-error: 	hsl(351, 74%, 50%);
+    /*Font*/
+    --fs-normal: 1rem;
+
+    font-family: Poppins, Montserrat, "DejaVu Sans", sans-serif;
+    font-size: var(--fs-normal);
+}
+
+#root {
+    display: grid;
+    color: var(--color-neutral-900);
+    background-color: var(--color-main-100);
+}
+.app-container {
+    justify-self: center;
+    width: min(100%, 1440px);
+    min-height: 100vh;
+    display: grid;
+    padding: 2rem 2rem 0 2rem;
+}
