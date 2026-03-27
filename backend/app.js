@@ -1,6 +1,5 @@
 const express = require("express")
 const app = express()
-const dotenv = require("dotenv")
 const cors = require("cors")
 
 const multer = require("multer")
@@ -18,12 +17,10 @@ const upload = multer({ storage: storage  })
 const userRoutes = require("./routes/user")
 const postRoutes = require("./routes/post")
 
-dotenv.config()
-
 app.use(cors())
 app.use(express.json())
 
-app.post('/upload', upload.single('file'), function (req, res, next) {
+app.post('/upload', upload.single('file'), function (req, res, _) {
     const file = req.file
     res.status(200).json(file.filename)
 })

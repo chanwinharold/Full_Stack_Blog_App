@@ -1,10 +1,12 @@
 import "../styles/Single.css"
+import userDefaultUrl from "../../public/uploads/default_user.png";
 import {Link, useLocation, useNavigate} from "react-router";
 import Menu from "../components/Menu.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../App.jsx";
 import axios from "axios";
 import moment from "moment";
+import { API_URL, UPLOAD_URL } from "../config";
 
 function Single() {
 
@@ -18,7 +20,7 @@ function Single() {
      currentUser && useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/api/posts/${postId}`, {
+                const res = await axios.get(`${API_URL}/posts/${postId}`, {
                     headers: {'Authorization': `Bearer ${currentUser.token}`}
                 })
                 return setPost(res.data)
@@ -31,7 +33,7 @@ function Single() {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/api/posts/${postId}`, {
+            await axios.delete(`${API_URL}/posts/${postId}`, {
                 headers: {'Authorization': `Bearer ${currentUser.token}`}
             })
             navigate("/")
@@ -43,9 +45,9 @@ function Single() {
     return currentUser ? (
         <main className="single-container">
             <section className="content-container">
-                <img srcSet={`/uploads/${post?.img}`} alt="image post"/>
+                <img srcSet={`${UPLOAD_URL}/${post?.img}`} alt="image post"/>
                 <div className="content-user">
-                    <img srcSet={post?.userImg} alt=""></img>
+                    <img srcSet={userDefaultUrl} alt="photo de profile"></img>
                     <div className="info">
                         <h2>{post.username}</h2>
                         <p>Posted {moment(post.date).fromNow()} </p>

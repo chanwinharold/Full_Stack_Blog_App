@@ -1,7 +1,6 @@
 const blog_db = require("../blog_db")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-require("dotenv").config()
 
 exports.register = (req, res) => {
     const query_if_user_exists = (`
@@ -39,7 +38,7 @@ exports.login = (req, res) => {
         FROM Users
         WHERE username = ?
     `)
-    blog_db.query(query_if_user_exists, req.body.username, (error, data) => {
+    blog_db.query(query_if_user_exists, [req.body.username], (error, data) => {
         if (error) return res.status(500).json(error)
         if (data.length > 0) {
             bcrypt.compare(req.body.password, data[0].password, (error, isValid) => {

@@ -2,6 +2,7 @@ import "../styles/Home.css"
 import {Link, useLocation} from "react-router";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { API_URL, UPLOAD_URL } from "../config";
 
 function Home() {
     const [Posts, setPosts] = useState([])
@@ -12,7 +13,7 @@ function Home() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/api/posts${category}`)
+                const res = await axios.get(`${API_URL}/posts${category}`)
                 return setPosts(res.data)
             } catch (error) {
                 console.error("Erreur détecté lors de la récupération des données : ", error)
@@ -28,7 +29,7 @@ function Home() {
                     Posts.map(post => (
                         <section key={post.id}>
                             <div className="post-image">
-                                <img srcSet={`/uploads/${post?.img}`} alt=""/>
+                                <img srcSet={`${UPLOAD_URL}/${post?.img}`} alt=""/>
                             </div>
                             <div className="post-content">
                                 <Link to={`post/${post.id}`}>

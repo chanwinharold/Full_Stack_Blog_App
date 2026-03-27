@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../App.jsx";
 import {Link} from "react-router";
 import axios from "axios";
+import { API_URL, UPLOAD_URL } from "../config";
 
 function Menu({category, postId}) {
 
@@ -12,7 +13,7 @@ function Menu({category, postId}) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/api/posts?cat=${category}`, {
+                const res = await axios.get(`${API_URL}/posts?cat=${category}`, {
                     headers: {'Authorization': `Bearer ${currentUser.token}`}
                 })
                 return setPost(res.data)
@@ -32,7 +33,7 @@ function Menu({category, postId}) {
                     (Number(post.id) !== Number(postId))
                     && (
                         <div key={post.id} className="post-container">
-                            <img srcSet={`/uploads/${post?.img}`} alt=""/>
+                            <img srcSet={`${UPLOAD_URL}/${post?.img}`} alt=""/>
                             <h3>{post.title}</h3>
                             <Link to={`/post/${post.id}`}>
                                 <button>Read More</button>

@@ -3,6 +3,7 @@ import {useState, useContext} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
 import {UserContext} from "../App.jsx";
+import { API_URL } from "../config";
 
 function Login({}) {
     const [ , setCurrentUser] = useContext(UserContext);
@@ -24,7 +25,7 @@ function Login({}) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("/api/auth/login", inputs)
+            const res = await axios.post(`${API_URL}/auth/login`, inputs)
 
             localStorage.setItem("resData", JSON.stringify(res.data))
             setCurrentUser(JSON.parse(localStorage.getItem("resData")))

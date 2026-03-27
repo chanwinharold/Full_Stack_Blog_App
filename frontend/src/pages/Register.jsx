@@ -2,6 +2,7 @@ import "../styles/Form.css"
 import {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router";
+import { API_URL } from "../config";
 
 function Register() {
     const [errorMessage, setErrorMessage] = useState("")
@@ -39,7 +40,7 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post("/api/auth/register", inputs)
+            const res = await axios.post(`${API_URL}/auth/register`, inputs)
             navigate("/login")
         } catch (error) {
             if (error.status === 409) return setErrorMessage("User already exists !")

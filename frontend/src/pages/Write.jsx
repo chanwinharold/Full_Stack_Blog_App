@@ -7,6 +7,7 @@ import axios from "axios";
 import {useLocation, useNavigate} from "react-router";
 import moment from "moment";
 import {UserContext} from "../App.jsx";
+import { API_URL } from "../config";
 
 
 function Write() {
@@ -24,7 +25,7 @@ function Write() {
         try {
             const formData = new FormData();
             formData.append( "file", img)
-            const res =  await axios.post("/api/upload", formData)
+            const res =  await axios.post(`${API_URL}/upload`, formData)
             return (res.data)
         } catch (error) {
             console.log(error)
@@ -36,10 +37,10 @@ function Write() {
 
         try {
             postState
-                ? await axios.put(`/api/posts/${postState.id}`, {
+                ? await axios.put(`${API_URL}/posts/${postState.id}`, {
                     title, description:value, category, img:img ? imgUrl : ""
                 }, {headers: {'Authorization': `Bearer ${currentUser.token}`}})
-                : await axios.post(`/api/posts`, {
+                : await axios.post(`${API_URL}/posts`, {
                     title, description:value, category, img:img ? imgUrl : "", date:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                 }, {headers: {'Authorization': `Bearer ${currentUser.token}`}})
             navigate("/")
