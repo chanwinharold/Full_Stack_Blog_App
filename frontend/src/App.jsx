@@ -1,6 +1,6 @@
 import './styles/App.css'
 import './styles/animations.css'
-import { createBrowserRouter, Outlet, RouterProvider, Navigate } from "react-router";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
 
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
@@ -15,10 +15,7 @@ import PrivateRoute from "./components/PrivateRoute.jsx"
 import DemoCredentialsBanner from "./components/DemoCredentialsBanner.jsx"
 import Cursor from "./components/Cursor.jsx"
 import {createContext, useState, useEffect} from "react";
-import axios from "axios";
-import { API_URL } from "./config";
-
-axios.defaults.withCredentials = true
+import api from "./api/axiosInstance";
 
 const router = createBrowserRouter([
     {
@@ -76,7 +73,7 @@ function App() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await axios.get(`${API_URL}/auth/me`)
+                const res = await api.get('/auth/me')
                 setCurrentUser(res.data)
             } catch (error) {
                 setCurrentUser(null)

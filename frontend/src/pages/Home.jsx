@@ -1,9 +1,9 @@
 import "../styles/Home.css"
 import "../styles/animations.css"
 import {Link, useLocation} from "react-router";
-import {useEffect, useState, forwardRef} from "react";
-import axios from "axios";
-import { API_URL, UPLOAD_URL } from "../config";
+import {useEffect, useState} from "react";
+import api from "../api/axiosInstance";
+import { UPLOAD_URL } from "../config";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 
 function Home() {
@@ -17,7 +17,7 @@ function Home() {
         setLoading(true)
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${API_URL}/posts${category}`)
+                const res = await api.get(`/posts${category}`)
                 setPosts(res.data)
                 if (res.data.length > 0 && !category) {
                     setFeaturedPost(res.data[0])

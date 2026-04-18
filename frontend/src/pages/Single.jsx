@@ -4,9 +4,9 @@ import {Link, useLocation, useNavigate} from "react-router";
 import Menu from "../components/Menu.jsx";
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../App.jsx";
-import axios from "axios";
+import api from "../api/axiosInstance";
 import moment from "moment";
-import { API_URL, UPLOAD_URL } from "../config";
+import { UPLOAD_URL } from "../config";
 
 function Single() {
 
@@ -17,10 +17,11 @@ function Single() {
     const location = useLocation()
     const postId = location.pathname.split("/")[2]
 
-     currentUser && useEffect(() => {
+    useEffect(() => {
+        if (!currentUser) return
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${API_URL}/posts/${postId}`, {
+                const res = await api.get(`/posts/${postId}`, {
                     headers: {'Authorization': `Bearer ${currentUser.token}`}
                 })
                 return setPost(res.data)
@@ -29,11 +30,11 @@ function Single() {
             }
         }
         fetchData()
-    }, [postId]);
+    }, [postId, currentUser]);
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`${API_URL}/posts/${postId}`, {
+            await api.delete(`/posts/${postId}`, {
                 headers: {'Authorization': `Bearer ${currentUser.token}`}
             })
             navigate("/")

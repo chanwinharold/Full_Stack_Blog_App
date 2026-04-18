@@ -3,11 +3,10 @@ import "../styles/Write.css"
 import React, {useContext, useState} from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import axios from "axios";
+import api from "../api/axiosInstance";
 import {useLocation, useNavigate} from "react-router";
 import moment from "moment";
 import {UserContext} from "../App.jsx";
-import { API_URL } from "../config";
 
 
 function Write() {
@@ -25,7 +24,9 @@ function Write() {
         try {
             const formData = new FormData();
             formData.append( "file", img)
-            const res =  await axios.post(`${API_URL}/upload`, formData)
+            const res =  await api.post('/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
             return (res.data)
         } catch (error) {
             console.log(error)
@@ -37,10 +38,10 @@ function Write() {
 
         try {
             postState
-                ? await axios.put(`${API_URL}/posts/${postState.id}`, {
+                ? await api.put(`/posts/${postState.id}`, {
                     title, description:value, category, img:img ? imgUrl : ""
                 }, {headers: {'Authorization': `Bearer ${currentUser.token}`}})
-                : await axios.post(`${API_URL}/posts`, {
+                : await api.post('/posts', {
                     title, description:value, category, img:img ? imgUrl : "", date:moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
                 }, {headers: {'Authorization': `Bearer ${currentUser.token}`}})
             navigate("/")

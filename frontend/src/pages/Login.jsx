@@ -1,13 +1,8 @@
 import "../styles/Form.css"
 import {useState, useContext} from "react";
-import axios from "axios";
+import api from "../api/axiosInstance";
 import {useNavigate} from "react-router";
 import {UserContext} from "../App.jsx";
-import { API_URL } from "../config";
-
-// FIX: Configure axios to send credentials (cookies) with requests
-// This replaces localStorage token storage
-axios.defaults.withCredentials = true
 
 function Login({}) {
     const [, setCurrentUser] = useContext(UserContext);
@@ -29,11 +24,8 @@ function Login({}) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            // FIX: Token now comes in httpOnly cookie, not in response body
-            const res = await axios.post(`${API_URL}/auth/login`, inputs)
+            const res = await api.post('/auth/login', inputs)
 
-            // FIX: Store non-sensitive user data in context
-            // The JWT is now in an httpOnly cookie, not in localStorage
             setCurrentUser({
                 username: res.data.username,
                 role: res.data.role

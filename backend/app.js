@@ -19,6 +19,31 @@ const postRoutes = require("./routes/post");
 
 const app = express();
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : [];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`[cors] Blocked request from origin: ${origin}`);
+      console.error(`[cors] Allowed origins: ${allowedOrigins.join(', ')}`);
+      callback(new Error(`CORS: origin '${origin}' not allowed`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Set-Cookie'],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 if (config.isProduction) {
   app.use(compression());
 }
@@ -31,15 +56,13 @@ app.use(helmet({
       styleSrc: ["'self'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'"],
+      connectSrc: ["'self'", "https://full-stack-blog-app-vo1q.onrender.com"],
     }
   },
   hsts: config.isProduction ? { maxAge: 31536000, includeSubDomains: true } : false
 }));
 
 app.use(cookieParser());
-
-app.use(cors());
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));

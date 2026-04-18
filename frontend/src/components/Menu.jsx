@@ -2,8 +2,8 @@ import "../styles/Menu.css"
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../App.jsx";
 import {Link} from "react-router";
-import axios from "axios";
-import { API_URL, UPLOAD_URL } from "../config";
+import api from "../api/axiosInstance";
+import { UPLOAD_URL } from "../config";
 
 function Menu({category, postId}) {
 
@@ -13,8 +13,8 @@ function Menu({category, postId}) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${API_URL}/posts?cat=${category}`, {
-                    headers: {'Authorization': `Bearer ${currentUser.token}`}
+                const res = await api.get(`/posts?cat=${category}`, {
+                    headers: {'Authorization': `Bearer ${currentUser?.token}`}
                 })
                 return setPost(res.data)
             } catch (error) {
