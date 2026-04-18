@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  publicDir: 'public',
   build: {
     outDir: 'dist',
     sourcemap: false,
@@ -11,7 +12,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router']
+          vendor: ['react', 'react-dom', 'react-router']  // react-router sans -dom
         }
       }
     },
