@@ -45,6 +45,9 @@ CREATE INDEX IF NOT EXISTS idx_posts_category ON Posts(category);
 CREATE INDEX IF NOT EXISTS idx_posts_date ON Posts(date DESC);
 CREATE INDEX IF NOT EXISTS idx_posts_userid ON Posts(userId);
 
+INSERT INTO Users (username, email, password, img, role)
+VALUES ('admin', 'admin@mail.com', 'azertyazerty', 'image_post_09.png', 'admin');
+
 -- ============================================
 -- SAMPLE DATA - Various Categories
 -- ============================================

@@ -17,12 +17,10 @@ services:
         value: "5432"
       - key: DB_PASSWORD
         sync: false
-        # IMPORTANT: Set this manually in Render Dashboard → Environment
-        # Value: your Supabase database password
       - key: KEY_SECRET
         generateValue: true
       - key: ALLOWED_ORIGINS
-        value: https://full-stack-blog-app-zeta.vercel.app
+        value: https://full-stack-blog-app-zeta.vercel.app,https://full-stack-blog-app-vo1q.onrender.com
 
   - type: web
     name: blog-frontend
