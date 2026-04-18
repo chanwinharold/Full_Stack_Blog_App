@@ -46,6 +46,7 @@ function Home() {
     }
 
     const splitTitle = (title) => {
+        if (!title) return null
         return title.split(' ').map((word, i) => (
             <span key={i} className="hero-title-word" style={{ animationDelay: `${i * 80}ms` }}>
                 <span>{word} </span>
