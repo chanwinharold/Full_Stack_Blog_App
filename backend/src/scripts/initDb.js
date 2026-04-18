@@ -14,46 +14,52 @@ async function initDb(retries = 5, delay = 2000) {
     connectionTimeoutMillis: 5000,
   });
 
+  console.log('[initDb] Connecting to database...');
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      console.log(`[DB Init] Attempting to connect to database (attempt ${attempt}/${retries})...`);
       await pool.query('SELECT NOW()');
-      console.log('[DB Init] Database connection successful');
+      console.log('[initDb] Connected to database');
       break;
     } catch (err) {
       if (attempt === retries) {
-        console.error('[DB Init] Failed to connect after all retries:', err.message);
+        console.error(`[initDb] Failed to connect after ${retries} attempts: ${err.message}`);
         await pool.end();
         process.exit(1);
       }
-      console.log(`[DB Init] Connection failed, retrying in ${delay}ms...`);
+      console.log(`[initDb] Connection attempt ${attempt} failed, retrying in ${delay}ms...`);
       await new Promise(r => setTimeout(r, delay));
     }
   }
 
   try {
-    console.log('[DB Init] Running schema initialization...');
+    console.log('[initDb] Running schema.sql...');
     
     const schemaPath = path.join(__dirname, '../../schema.sql');
     const schema = fs.readFileSync(schemaPath, 'utf-8');
     
     await pool.query(schema);
-    console.log('[DB Init] Schema applied successfully');
     
     const tables = await pool.query(`
       SELECT table_name FROM information_schema.tables 
-      WHERE table_schema = 'public'
+      WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
     `);
-    console.log('[DB Init] Tables created:', tables.rows.map(t => t.table_name).join(', '));
+    
+    tables.rows.forEach(t => {
+      console.log(`[initDb] ✓ Table: ${t.table_name}`);
+    });
+    
+    console.log('[initDb] Database initialized successfully.');
     
   } catch (err) {
-    console.error('[DB Init] Schema initialization failed:', err.message);
+    console.error(`[initDb] Schema initialization failed: ${err.message}`);
     await pool.end();
     process.exit(1);
   }
 
   await pool.end();
-  console.log('[DB Init] Database initialization complete');
 }
 
 initDb();
+
+module.exports = { initDb };
