@@ -1,12 +1,13 @@
 import './styles/App.css'
 import './styles/animations.css'
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
+import { createBrowserRouter, Outlet, RouterProvider, Navigate } from "react-router";
 
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx"
 import Single from "./pages/Single.jsx";
 import Write from "./pages/Write.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 import Navbar from "./components/Navbar.jsx"
 import Footer from "./components/Footer.jsx"
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register/>
+    },
+    {
+        path: "*",
+        element: <NotFound/>
     }
 ]);
 

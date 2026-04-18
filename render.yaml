@@ -20,7 +20,7 @@ services:
       - key: KEY_SECRET
         generateValue: true
       - key: ALLOWED_ORIGINS
-        value: https://your-frontend.onrender.com
+        value: https://full-stack-blog-app-zeta.vercel.app
       - key: PORT
         value: 3000
 

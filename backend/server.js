@@ -7,6 +7,8 @@ const app = require('./app');
 const config = require('./src/config');
 const { pool, testConnection } = require('./config/db');
 
+const PORT = process.env.PORT || 3000;
+
 async function connectWithRetry(retries = 5, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -24,7 +26,7 @@ async function connectWithRetry(retries = 5, delay = 2000) {
 }
 
 function ensureUploadsDir() {
-  const uploadPath = path.join(__dirname, '../uploads');
+  const uploadPath = path.join(__dirname, 'uploads');
   if (!existsSync(uploadPath)) {
     mkdirSync(uploadPath, { recursive: true });
     console.log('Created uploads directory');
@@ -52,8 +54,8 @@ async function startServer() {
     
     server = http.createServer(app);
     
-    server.listen(config.PORT, () => {
-      console.log(`Server running on port ${config.PORT}`);
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (err) {
     console.error('Failed to start server:', err);
