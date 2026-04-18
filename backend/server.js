@@ -1,83 +1,43 @@
 require('dotenv').config();
-const http = require('http');
-const path = require('path');
-const { existsSync, mkdirSync } = require('fs');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 
-const app = require('./app');
-const config = require('./src/config');
-const { pool, testConnection } = require('./config/db');
+const app = express();
+
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.options('/{*path}', cors());
+
+app.use(helmet());
+app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
+
+// Static files
+app.use('/uploads', express.static('uploads'));
+
+// Routes
+app.use('/auth', require('./routes/user'));
+app.use('/posts', require('./routes/post'));
+
+// Upload
+app.use('/upload', require('./routes/upload'));
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(err.status || 500).json({ message: err.message || 'Server error' });
+});
 
 const PORT = process.env.PORT || 3000;
-
-async function connectWithRetry(retries = 5, delay = 2000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      await testConnection();
-      console.log('Database connected');
-      await pool.query('SET statement_timeout = 5000');
-      console.log('Query timeout set to 5s');
-      return;
-    } catch (err) {
-      if (i === retries - 1) throw err;
-      console.log(`DB connection attempt ${i + 1} failed, retrying in ${delay}ms...`);
-      await new Promise(r => setTimeout(r, delay));
-    }
-  }
-}
-
-function ensureUploadsDir() {
-  const uploadPath = path.join(__dirname, 'uploads');
-  if (!existsSync(uploadPath)) {
-    mkdirSync(uploadPath, { recursive: true });
-    console.log('Created uploads directory');
-  }
-}
-
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
-});
-
-process.on('unhandledRejection', (reason) => {
-  console.error('Unhandled Rejection:', reason);
-  process.exit(1);
-});
-
-let server;
-
-async function startServer() {
-  try {
-    console.log(`Starting server in ${config.NODE_ENV} mode...`);
-    
-    await connectWithRetry();
-    ensureUploadsDir();
-    
-    server = http.createServer(app);
-    
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error('Failed to start server:', err);
-    process.exit(1);
-  }
-}
-
-process.on('SIGTERM', async () => {
-  console.log('SIGTERM received, closing server...');
-  if (server) {
-    server.close(async () => {
-      await pool.end();
-      console.log('Server closed gracefully');
-      process.exit(0);
-    });
-    setTimeout(() => {
-      console.error('Forced exit after timeout');
-      process.exit(1);
-    }, 10000);
-  }
-});
-
-startServer();
-
-module.exports = { pool };
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

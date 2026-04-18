@@ -1,42 +1,27 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Blog application backend",
-  "license": "MIT",
-  "author": "harold chanwin",
-  "type": "commonjs",
   "main": "server.js",
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "echo 'No build step for backend'",
-    "lint": "eslint src/",
-    "db:init": "node src/scripts/initDb.js",
-    "precheck": "node src/scripts/precheck.js"
+    "db:init": "node scripts/initDb.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "express-rate-limit": "^8.3.2",
     "express-validator": "^7.3.2",
     "helmet": "^8.1.0",
     "jsonwebtoken": "9.0.3",
     "multer": "2.1.1",
     "pg": "^8.20.0",
-    "pino": "^9.6.0",
-    "pino-http": "^10.4.0",
     "sanitize-html": "^2.17.3",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10",
-    "pino-pretty": "^13.0.0"
+    "nodemon": "^3.1.10"
   }
 }
