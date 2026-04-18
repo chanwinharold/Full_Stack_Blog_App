@@ -1,212 +1,173 @@
 import { useEffect, useState, useRef } from "react";
-import "../styles/Navbar.css";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { UserContext } from "../App.jsx";
 import { useContext } from "react";
+import "./Navbar.css";
 
 function Navbar() {
-    const Links = ["art", "science", "technology", "cinema", "design", "food"];
     const [currentUser] = useContext(UserContext);
-    const [isShrunk, setIsShrunk] = useState(false);
-    const [activeIndex, setActiveIndex] = useState(-1);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const indicatorRef = useRef(null);
-    const linkRefs = useRef([]);
+    const location = useLocation();
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolledUp, setScrolledUp] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const menuRef = useRef(null);
-    const hamburgerRef = useRef(null);
+    const lastScrollY = useRef(0);
 
-    // Scroll handler
+    const categories = [
+        { name: "Accueil", path: "/" },
+        { name: "Articles", path: "/" },
+        { name: "Catégories", path: "/" },
+        { name: "À propos", path: "/" }
+    ];
+
+    const getCategoryLinks = () => [
+        { name: "art", path: "/?cat=art" },
+        { name: "science", path: "/?cat=science" },
+        { name: "technology", path: "/?cat=technology" },
+        { name: "cinema", path: "/?cat=cinema" },
+        { name: "design", path: "/?cat=design" },
+        { name: "food", path: "/?cat=food" },
+    ];
+
+    const categoryLinks = getCategoryLinks();
+
     useEffect(() => {
-        let lastScrollY = window.scrollY;
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-            if (currentScrollY > 80 && currentScrollY > lastScrollY) {
-                setIsShrunk(true);
-            } else {
-                setIsShrunk(false);
-            }
-            lastScrollY = currentScrollY;
+            setIsScrolled(currentScrollY > 60);
+            setScrolledUp(currentScrollY < lastScrollY.current && currentScrollY > 60);
+            lastScrollY.current = currentScrollY;
         };
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Escape key handler for mobile menu
     useEffect(() => {
         const handleKeyDown = (e) => {
-            if (e.key === 'Escape' && mobileMenuOpen) {
-                setMobileMenuOpen(false);
+            if (e.key === "Escape" && mobileOpen) {
+                setMobileOpen(false);
+                document.body.style.overflow = "";
             }
         };
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [mobileMenuOpen]);
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [mobileOpen]);
 
-    // Focus trap in mobile menu
     useEffect(() => {
-        if (mobileMenuOpen && menuRef.current) {
-            const firstFocusable = menuRef.current.querySelector('a, button');
-            if (firstFocusable) {
-                firstFocusable.focus();
-            }
-        }
-    }, [mobileMenuOpen]);
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-        if (!mobileMenuOpen) {
-            document.body.style.overflow = 'hidden';
+        if (mobileOpen) {
+            document.body.style.overflow = "hidden";
+            menuRef.current?.querySelector("a")?.focus();
         } else {
-            document.body.style.overflow = '';
+            document.body.style.overflow = "";
         }
+    }, [mobileOpen]);
+
+    const closeMenu = () => {
+        setMobileOpen(false);
+        document.body.style.overflow = "";
     };
 
-    const closeMobileMenu = () => {
-        setMobileMenuOpen(false);
-        document.body.style.overflow = '';
+    const isActive = (path) => {
+        if (path === "/") return location.pathname === "/";
+        return location.search.includes(path.split("=")[1]);
     };
-
-    const handleMouseEnter = (index) => {
-        setActiveIndex(index);
-        updateIndicator(index);
-    };
-
-    const handleMouseLeave = () => {
-        setActiveIndex(-1);
-        if (indicatorRef.current) {
-            indicatorRef.current.style.width = '0';
-        }
-    };
-
-    const updateIndicator = (index) => {
-        const link = linkRefs.current[index];
-        if (link && indicatorRef.current) {
-            const rect = link.getBoundingClientRect();
-            const parentRect = link.parentElement.getBoundingClientRect();
-            indicatorRef.current.style.left = `${rect.left - parentRect.left}px`;
-            indicatorRef.current.style.width = `${rect.width}px`;
-        }
-    };
-
-    useEffect(() => {
-        if (activeIndex === -1 && indicatorRef.current) {
-            indicatorRef.current.style.width = '0';
-        }
-    }, [activeIndex]);
 
     return (
         <>
-            <div className={`navbar-container ${isShrunk ? "navbar-shrink" : ""}`}>
-                <Link to={"/"} className="navbar-logo" onClick={closeMobileMenu}>
-                    chanwin.
+            <header className={`navbar ${isScrolled ? "scrolled" : ""} ${scrolledUp ? "scrolled-up" : ""}`}>
+                <Link to="/" className="navbar-brand" onClick={closeMenu}>
+                    <span className="brand-letter">c</span>
+                    <span className="brand-text">hanwin.</span>
                 </Link>
 
-                {/* Desktop Navigation */}
-                <nav className="navbar-links hide-mobile">
-                    <ul
-                        className="navbar-categories"
-                        onMouseLeave={handleMouseLeave}
-                    >
-                        <div
-                            ref={indicatorRef}
-                            className="nav-indicator"
-                        />
-                        {Links.map((link, i) => (
-                            <li key={`${link}-${i}`}>
+                <nav className="navbar-nav hide-mobile">
+                    <ul className="nav-list">
+                        {categoryLinks.map((link, i) => (
+                            <li key={i} className="nav-item">
                                 <Link
-                                    to={`/?cat=${link}`}
-                                    ref={(el) => (linkRefs.current[i] = el)}
-                                    onMouseEnter={() => handleMouseEnter(i)}
+                                    to={link.path}
+                                    className={`nav-link ${isActive(link.path) ? "active" : ""}`}
                                 >
-                                    {link}
+                                    <span className="link-number">{String(i + 1).padStart(2, '0')}</span>
+                                    <span className="link-text">{link.name}</span>
                                 </Link>
                             </li>
                         ))}
                     </ul>
-                    <ul className="navbar-others">
-                        <li>{currentUser ? currentUser.username : ""}</li>
-                        <li>
-                            {currentUser ? (
-                                <Link to={`/login`} onClick={() => { localStorage.removeItem("resData"); closeMobileMenu(); }}>
-                                    Logout
-                                </Link>
-                            ) : (
-                                <Link to={`/login`}>Login</Link>
-                            )}
-                        </li>
-                        <li>{currentUser ? <Link to="/write">Write</Link> : null}</li>
-                    </ul>
-                </nav>
-
-                {/* Mobile Hamburger Button */}
-                <button
-                    className="hamburger hide-desktop tap-highlight-transparent"
-                    onClick={toggleMobileMenu}
-                    aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                    aria-expanded={mobileMenuOpen}
-                    ref={hamburgerRef}
-                >
-                    <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-                    <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-                    <span className={`hamburger-line ${mobileMenuOpen ? 'open' : ''}`} />
-                </button>
-            </div>
-
-            {/* Mobile Overlay Menu */}
-            {mobileMenuOpen && (
-                <div
-                    className="mobile-menu-overlay"
-                    ref={menuRef}
-                >
-                    <button
-                        className="mobile-menu-close tap-highlight-transparent"
-                        onClick={closeMobileMenu}
-                        aria-label="Close menu"
-                    >
-                        ✕
-                    </button>
-                    <nav className="mobile-menu-nav">
-                        {Links.map((link, i) => (
-                            <Link
-                                key={`${link}-${i}`}
-                                to={`/?cat=${link}`}
-                                className={`mobile-menu-link stagger-${i + 1}`}
-                                onClick={closeMobileMenu}
-                            >
-                                {link}
-                            </Link>
-                        ))}
-                        <div className="mobile-menu-divider" />
+                    <div className="nav-actions">
                         {currentUser ? (
                             <>
-                                <Link
-                                    to="/write"
-                                    className="mobile-menu-link stagger-7"
-                                    onClick={closeMobileMenu}
-                                >
-                                    Write
-                                </Link>
+                                <span className="user-name">{currentUser.username}</span>
+                                <Link to="/write" className="nav-link nav-cta">Écrire</Link>
                                 <button
-                                    className="mobile-menu-link stagger-8"
-                                    onClick={() => { localStorage.removeItem("resData"); closeMobileMenu(); }}
+                                    onClick={() => { localStorage.removeItem("resData"); window.location.reload(); }}
+                                    className="nav-link"
                                 >
-                                    Logout
+                                    Déconnexion
                                 </button>
                             </>
                         ) : (
+                            <Link to="/login" className="nav-link">Connexion</Link>
+                        )}
+                    </div>
+                </nav>
+
+                <button
+                    className={`hamburger hide-desktop ${mobileOpen ? "open" : ""}`}
+                    onClick={() => setMobileOpen(!mobileOpen)}
+                    aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                    aria-expanded={mobileOpen}
+                >
+                    <span className="hamburger-line"></span>
+                    <span className="hamburger-line"></span>
+                    <span className="hamburger-line"></span>
+                </button>
+            </header>
+
+            {mobileOpen && (
+                <div
+                    className="mobile-panel"
+                    ref={menuRef}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Menu de navigation"
+                >
+                    <div className="mobile-panel-accent" />
+                    <nav className="mobile-panel-nav">
+                        {categoryLinks.map((link, i) => (
+                            <Link
+                                key={i}
+                                to={link.path}
+                                className={`mobile-link stagger-${i + 1} ${isActive(link.path) ? "active" : ""}`}
+                                onClick={closeMenu}
+                            >
+                                <span className="mobile-link-number">{String(i + 1).padStart(2, '0')}</span>
+                                {link.name}
+                            </Link>
+                        ))}
+                        <div className="mobile-divider" />
+                        {currentUser ? (
                             <>
-                                <Link
-                                    to="/login"
-                                    className="mobile-menu-link stagger-7"
-                                    onClick={closeMobileMenu}
-                                >
-                                    Login
+                                <Link to="/write" className="mobile-link stagger-7" onClick={closeMenu}>
+                                    Écrire un article
                                 </Link>
+                                <button
+                                    className="mobile-link stagger-8"
+                                    onClick={() => { localStorage.removeItem("resData"); window.location.reload(); }}
+                                >
+                                    Déconnexion
+                                </button>
                             </>
+                        ) : (
+                            <Link to="/login" className="mobile-link stagger-7" onClick={closeMenu}>
+                                Connexion
+                            </Link>
                         )}
                     </nav>
                 </div>
             )}
+
+            {mobileOpen && <div className="mobile-overlay" onClick={closeMenu} />}
         </>
     );
 }
