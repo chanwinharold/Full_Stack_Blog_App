@@ -23,7 +23,7 @@
 
 @media (min-width: 768px) {
   .hide-mobile {
-    display: block !important;
+    display: flex !important;
   }
 }
 

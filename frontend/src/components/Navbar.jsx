@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router";
 import { UserContext } from "../App.jsx";
 import { useContext } from "react";
-import "./Navbar.css";
+import "../styles/Navbar.css";
 
 function Navbar() {
     const [currentUser] = useContext(UserContext);
