@@ -5,8 +5,12 @@ import {useNavigate} from "react-router";
 import {UserContext} from "../App.jsx";
 import { API_URL } from "../config";
 
+// FIX: Configure axios to send credentials (cookies) with requests
+// This replaces localStorage token storage
+axios.defaults.withCredentials = true
+
 function Login({}) {
-    const [ , setCurrentUser] = useContext(UserContext);
+    const [, setCurrentUser] = useContext(UserContext);
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState("")
     const [inputs, setInputs] = useState({
@@ -25,14 +29,23 @@ function Login({}) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            // FIX: Token now comes in httpOnly cookie, not in response body
             const res = await axios.post(`${API_URL}/auth/login`, inputs)
 
-            localStorage.setItem("resData", JSON.stringify(res.data))
-            setCurrentUser(JSON.parse(localStorage.getItem("resData")))
+            // FIX: Store non-sensitive user data in context
+            // The JWT is now in an httpOnly cookie, not in localStorage
+            setCurrentUser({
+                username: res.data.username,
+                role: res.data.role
+            })
 
             navigate("/")
         } catch (error) {
-            setErrorMessage("Your username or password is incorrect !")
+            if (error.response?.status === 429) {
+                setErrorMessage("Too many attempts. Please try again later.")
+            } else {
+                setErrorMessage("Your username or password is incorrect!")
+            }
         }
     }
 

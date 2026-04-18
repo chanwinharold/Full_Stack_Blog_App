@@ -1,0 +1,49 @@
+/* ============================================
+ * BREAKPOINTS & FLUID SPACING
+ * Define all breakpoints as CSS custom properties
+ * ============================================ */
+
+:root {
+  /* Breakpoints - use in media queries: @media (min-width: var(--bp-md)) */
+  --bp-xs:  320px;
+  --bp-sm:  480px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+  --bp-3xl: 2560px;
+
+  /* Fluid Spacing */
+  --space-section-v: clamp(2rem, 6vw, 6rem);
+  --space-container-h: clamp(1rem, 5vw, 4rem);
+  --space-card-gap: clamp(1rem, 3vw, 2rem);
+
+  /* Container max-width */
+  --container-max: min(1400px, 92vw);
+  --container-ultrawide: min(1600px, 92vw);
+
+  /* Navbar */
+  --navbar-height: clamp(52px, 8vw, 72px);
+
+  /* Image aspect ratios */
+  --ar-hero: 16/9;
+  --ar-card: 3/2;
+  --ar-preview: 16/9;
+
+  /* Touch target minimum */
+  --touch-min: 44px;
+}
+
+/* Container utility */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-left: var(--space-container-h);
+  padding-right: var(--space-container-h);
+}
+
+@media (min-width: 2560px) {
+  .container {
+    max-width: var(--container-ultrawide);
+  }
+}

@@ -1,17 +1,56 @@
+/* Minimal single-line footer */
 .footer-container {
-    align-self: end;
-    height: fit-content;
-    display: inline-flex;
-    justify-content: space-between;
-    padding: 2rem;
-    border-top: 2px solid var(--color-neutral-900);
-
-}
-.footer-container span {
-    display: inline-flex;
-    gap: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
 }
 
-.footer-social svg path {
-    color: var(--color-neutral-900);
+.footer-container p {
+  color: var(--text-muted);
+}
+
+.footer-container a {
+  color: var(--text-secondary);
+  transition: color var(--transition-base);
+}
+
+.footer-container a:hover {
+  color: var(--accent);
+}
+
+.footer-logo {
+  display: none;
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.footer-social a {
+  color: var(--text-muted);
+  transition: color var(--transition-base);
+}
+
+.footer-social a:hover {
+  color: var(--accent);
+}
+
+.footer-social svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    flex-direction: column;
+    gap: var(--space-4);
+    text-align: center;
+  }
 }

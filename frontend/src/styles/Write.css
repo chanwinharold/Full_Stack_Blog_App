@@ -1,65 +1,325 @@
+/* Full-width post editor with sidebar */
 .write-container {
-    width: 100%; min-height: 100%;
-    padding-block: 2rem;
-    display: flex; gap: 2rem;
+  display: flex;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: calc(100vh - 80px);
 }
 
+/* Main editor area */
 .editor-container {
-    flex: 5;
-    display: flex; gap: 2rem;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
-.editor-container input {
-    border: none;
-    width: 100%;
-    height: 40px;
-    outline: none;
-    padding-inline: 2rem;
+
+.editor-container input#title {
+  width: 100%;
+  height: 64px;
+  padding: 0 var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  transition: border-color var(--transition-base);
+}
+
+.editor-container input#title:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.editor-container input#title::placeholder {
+  color: var(--text-muted);
 }
 
 .textarea-container {
-    height: 450px;
-    border: none;
-
-    .textarea { height: 100%;}
-    * { border-color: var(--color-neutral-900) !important;}
+  flex: 1;
+  min-height: 500px;
 }
 
+/* Override Quill editor styles */
+.textarea-container .ql-toolbar {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.textarea-container .ql-toolbar .ql-stroke {
+  stroke: var(--text-muted);
+}
+
+.textarea-container .ql-toolbar .ql-fill {
+  fill: var(--text-muted);
+}
+
+.textarea-container .ql-toolbar button:hover .ql-stroke {
+  stroke: var(--accent);
+}
+
+.textarea-container .ql-toolbar button:hover .ql-fill {
+  fill: var(--accent);
+}
+
+.textarea-container .ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--accent);
+}
+
+.textarea-container .ql-toolbar button.ql-active .ql-fill {
+  fill: var(--accent);
+}
+
+.textarea-container .ql-toolbar .ql-picker {
+  color: var(--text-muted);
+}
+
+.textarea-container .ql-toolbar .ql-picker-label:hover,
+.textarea-container .ql-toolbar .ql-picker-label:hover .ql-stroke {
+  color: var(--accent);
+  stroke: var(--accent);
+}
+
+.textarea-container .ql-container {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+}
+
+.textarea-container .ql-editor {
+  min-height: clamp(250px, 50vh, 450px);
+  padding: var(--space-4, 1rem);
+  line-height: 1.8;
+}
+
+.textarea-container .ql-editor.ql-blank::before {
+  color: var(--text-muted);
+  font-style: normal;
+}
+
+.textarea-container .ql-editor h1,
+.textarea-container .ql-editor h2,
+.textarea-container .ql-editor h3 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+}
+
+.textarea-container .ql-editor p {
+  margin-bottom: var(--space-3);
+}
+
+.textarea-container .ql-editor a {
+  color: var(--accent);
+}
+
+.textarea-container .ql-editor blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-4);
+  color: var(--text-secondary);
+}
+
+.textarea-container .ql-editor pre {
+  background: var(--bg-elevated);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+.textarea-container .ql-editor code {
+  background: var(--bg-elevated);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+}
+
+.textarea-container .ql-editor img {
+  border-radius: var(--radius-md);
+  max-width: 100%;
+}
+
+/* Sidebar */
 .right-container {
-    flex: 2;
-    display: flex; gap: 2rem;
-    flex-direction: column;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex-shrink: 0;
 }
-.right-container h2 {
-    margin-bottom: 1rem;
-    font-size: calc(var(--fs-normal) * 2);
-}
+
 .right-container > div {
-    display: flex; gap: 0.5rem;
-    flex-direction: column;
-    padding: 2rem;
-    border: 1px solid var(--color-neutral-900);
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
 }
 
+.right-container h2 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
 
-.item-one input::file-selector-button, button {
-    cursor: pointer;
-    width: fit-content;
-    height: 40px;
-    padding-inline: 1rem;
-    border: none;
-    background-color: white;
-    transition: all 500ms;
+/* Publish settings */
+.item-one span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
 }
-.item-one input:hover {
-    &::file-selector-button {
-        background-color: var(--color-secondary-500);
-    }
+
+.item-one input[type="file"] {
+  display: none;
 }
+
+.item-one input::file-selector-button,
+.item-one button {
+  width: 100%;
+  height: 40px;
+  margin-top: var(--space-2);
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.item-one input::file-selector-button {
+  background: transparent;
+}
+
+.item-one input:hover::file-selector-button,
 .item-one button:hover {
-    background-color: var(--color-secondary-500);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.item-one button[type="button"] {
+  background: var(--accent);
+  color: var(--bg-base);
+  font-weight: 600;
+  margin-top: var(--space-4);
+}
+
+.item-one button[type="button"]:hover {
+  background: #e69520;
+  color: var(--bg-base);
+}
+
+/* Image preview */
+.image-preview {
+  width: 100%;
+  height: 120px;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Category radio buttons */
+.item-two {
+  display: flex;
+  flex-direction: column;
 }
 
 .radio-container {
-    display: flex; gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  cursor: pointer;
+}
+
+.radio-container input[type="radio"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.radio-container input[type="radio"]:checked {
+  border-color: var(--accent);
+}
+
+.radio-container input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.radio-container label {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-base);
+}
+
+.radio-container:hover label {
+  color: var(--text-primary);
+}
+
+@media (max-width: 1024px) {
+  .write-container {
+    flex-direction: column;
+  }
+
+  .right-container {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .right-container > div {
+    flex: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .write-container {
+    padding: var(--space-4);
+  }
+
+  .right-container {
+    flex-direction: column;
+  }
+
+  .editor-container input#title {
+    font-size: var(--fs-2xl);
+  }
 }

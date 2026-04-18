@@ -1,0 +1,52 @@
+.error-fallback-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 20px;
+}
+
+.error-fallback-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.error-fallback-icon {
+  color: #e94560;
+  margin-bottom: 24px;
+}
+
+.error-fallback-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.error-fallback-message {
+  font-family: 'Mulish', sans-serif;
+  font-size: 16px;
+  color: #a0a0a0;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.error-fallback-button {
+  background: #e94560;
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  font-family: 'Mulish', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.error-fallback-button:hover {
+  background: #d63d56;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+}

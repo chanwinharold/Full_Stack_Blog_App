@@ -1,0 +1,412 @@
+/* ============================================
+ * PREMIUM ANIMATIONS - Editorial Dark Magazine
+ * All keyframes and utility classes
+ * ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
+:root {
+  --accent: #f5a623;
+  --accent-dim: rgba(245, 166, 35, 0.15);
+  --bg-base: #0a0a0a;
+  --bg-surface: #1a1a1a;
+  --text-primary: #fafafa;
+  --text-muted: #525252;
+  
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Page Transitions ---- */
+@keyframes pageClipOut {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 0 100% 0); }
+}
+
+@keyframes pageClipIn {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes sweepLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.page-exit {
+  animation: pageClipOut 200ms var(--ease-out-expo) forwards;
+}
+
+.page-enter {
+  clip-path: inset(100% 0 0 0);
+  animation: pageClipIn 300ms var(--ease-out-expo) forwards;
+}
+
+.page-sweep-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  z-index: 10000;
+  animation: sweepLine 150ms linear forwards;
+  animation-delay: 200ms;
+}
+
+/* ---- Hero Section ---- */
+@keyframes heroTitleWord {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroBadge {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes heroMeta {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes kenBurns {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+.hero-title-word {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.hero-title-word span {
+  display: inline-block;
+  opacity: 0;
+  animation: heroTitleWord 500ms var(--ease-out-expo) forwards;
+}
+
+.hero-badge {
+  opacity: 0;
+  animation: heroBadge 400ms var(--ease-out-expo) forwards;
+  animation-delay: 600ms;
+}
+
+.hero-meta {
+  opacity: 0;
+  animation: heroMeta 500ms var(--ease-out-expo) forwards;
+  animation-delay: 400ms;
+}
+
+.hero-image-ken-burns {
+  animation: kenBurns 1.2s var(--ease-out-expo) forwards;
+}
+
+/* ---- Card Animations ---- */
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardImageOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cardTitleUnderline {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.card-reveal {
+  opacity: 0;
+  animation: cardReveal 500ms var(--ease-out-quart) forwards;
+}
+
+.card-reveal-delay-1 { animation-delay: 0ms; }
+.card-reveal-delay-2 { animation-delay: 120ms; }
+.card-reveal-delay-3 { animation-delay: 240ms; }
+
+.card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-dim);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.card:hover .card-image-overlay {
+  animation: cardImageOverlay 250ms ease forwards;
+}
+
+.card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 300ms var(--ease-out-expo);
+}
+
+.card:hover .card-title::after {
+  width: 100%;
+}
+
+/* ---- Magnetic Card ---- */
+.card-magnetic {
+  transition: transform 100ms ease-out;
+}
+
+/* ---- Navbar Scroll ---- */
+@keyframes navbarShrink {
+  from { padding: 16px 32px; }
+  to { padding: 8px 24px; }
+}
+
+.navbar-shrink {
+  animation: navbarShrink 300ms ease forwards;
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: left 250ms var(--ease-out-expo), width 250ms var(--ease-out-expo);
+}
+
+.nav-link-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.nav-link-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 200ms, transform 200ms;
+}
+
+/* ---- Reading Progress ---- */
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 9999;
+  width: 0%;
+  transition: width 100ms linear;
+}
+
+/* ---- Text Reveal on Scroll ---- */
+@keyframes paragraphReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.paragraph-reveal {
+  opacity: 0;
+}
+
+.paragraph-reveal-visible {
+  animation: paragraphReveal 500ms var(--ease-out-expo) forwards;
+}
+
+@keyframes blockquoteSlide {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+.blockquote-border {
+  position: relative;
+}
+
+.blockquote-border::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 0;
+  background: var(--accent);
+  transition: height 400ms var(--ease-out-expo);
+}
+
+.blockquote-border-visible::before {
+  height: 100%;
+}
+
+@keyframes codeExpand {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.code-reveal {
+  clip-path: inset(0 100% 0 0);
+}
+
+.code-reveal-visible {
+  animation: codeExpand 400ms var(--ease-out-expo) forwards;
+}
+
+/* ---- Admin Table ---- */
+@keyframes tableRowSlide {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.table-row-highlight {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-dim);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.table-row:hover .table-row-highlight {
+  animation: tableRowSlide 200ms var(--ease-out-expo) forwards;
+}
+
+@keyframes iconShake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+.icon-shake:hover {
+  animation: iconShake 300ms ease;
+}
+
+@keyframes buttonSuccess {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.button-success {
+  animation: buttonSuccess 300ms var(--ease-out-expo);
+}
+
+@keyframes inputFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.input-border-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+.input:focus + .input-border-fill {
+  transform: scaleX(1);
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-number-animate {
+  animation: countUp 800ms var(--ease-out-expo) forwards;
+}
+
+/* ---- 404 / Empty States ---- */
+@keyframes ambientFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.empty-float {
+  animation: ambientFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes glitch {
+  0%, 100% { text-shadow: none; }
+  20% { text-shadow: 3px 0 var(--accent), -3px 0 cyan; }
+  40% { text-shadow: -3px 0 var(--accent), 3px 0 cyan; }
+  60% { text-shadow: 3px 0 var(--accent), -3px 0 cyan; }
+  80% { text-shadow: -3px 0 var(--accent), 3px 0 cyan; }
+}
+
+.glitch-text {
+  animation: glitch 400ms ease;
+  animation-delay: 3s;
+  animation-iteration-count: infinite;
+}
+
+/* ---- Skeleton ---- */
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* ---- Custom Cursor ---- */
+.cursor-inner {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  mix-blend-mode: difference;
+  transition: transform 100ms ease;
+}
+
+.cursor-outer {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  background: transparent;
+  transition: transform 150ms ease-out, background 100ms ease;
+}
+
+.cursor-hover .cursor-inner {
+  transform: scale(0);
+}
+
+.cursor-hover .cursor-outer {
+  transform: scale(1.5);
+  background: rgba(245, 166, 35, 0.2);
+}
+
+/* ---- Utility Classes ---- */
+.will-change-transform {
+  will-change: transform;
+}
+
+.remove-will-change {
+  will-change: auto;
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

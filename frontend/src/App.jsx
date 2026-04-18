@@ -1,4 +1,5 @@
 import './styles/App.css'
+import './styles/animations.css'
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
 
 import Home from "./pages/Home.jsx";
@@ -9,7 +10,14 @@ import Write from "./pages/Write.jsx";
 
 import Navbar from "./components/Navbar.jsx"
 import Footer from "./components/Footer.jsx"
-import {createContext, useState} from "react";
+import PrivateRoute from "./components/PrivateRoute.jsx"
+import DemoCredentialsBanner from "./components/DemoCredentialsBanner.jsx"
+import Cursor from "./components/Cursor.jsx"
+import {createContext, useState, useEffect} from "react";
+import axios from "axios";
+import { API_URL } from "./config";
+
+axios.defaults.withCredentials = true
 
 const router = createBrowserRouter([
     {
@@ -26,7 +34,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/write",
-                element: <Write/>
+                element: (
+                    <PrivateRoute>
+                        <Write/>
+                    </PrivateRoute>
+                )
             }
         ]
     },
@@ -43,6 +55,7 @@ const router = createBrowserRouter([
 function Layout() {
     return (
         <>
+            <Cursor />
             <Navbar/>
             <Outlet/>
             <Footer/>
@@ -53,10 +66,23 @@ function Layout() {
 export const UserContext = createContext()
 
 function App() {
-    const [currentUser, setCurrentUser] = useState( JSON.parse(localStorage.getItem("resData")) || null )
+    const [currentUser, setCurrentUser] = useState(null)
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/auth/me`)
+                setCurrentUser(res.data)
+            } catch (error) {
+                setCurrentUser(null)
+            }
+        }
+        checkAuth()
+    }, [])
 
     return (
         <div className="app-container">
+            <DemoCredentialsBanner />
             <UserContext.Provider value={[currentUser, setCurrentUser]}>
                 <RouterProvider router={router}/>
             </UserContext.Provider>

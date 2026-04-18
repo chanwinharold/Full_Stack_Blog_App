@@ -1,5 +1,5 @@
 import "../styles/Single.css"
-import userDefaultUrl from "../../public/uploads/default_user.png";
+import userDefaultUrl from "../assets/default_user.png";
 import {Link, useLocation, useNavigate} from "react-router";
 import Menu from "../components/Menu.jsx";
 import {useContext, useEffect, useState} from "react";

@@ -4,6 +4,9 @@ import axios from "axios";
 import {useNavigate} from "react-router";
 import { API_URL } from "../config";
 
+// FIX: Configure axios to send credentials (cookies) with requests
+axios.defaults.withCredentials = true
+
 function Register() {
     const [errorMessage, setErrorMessage] = useState("")
     const [isDisabled, setIsDisabled] = useState(true)
@@ -40,10 +43,10 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await axios.post(`${API_URL}/auth/register`, inputs)
+            await axios.post(`${API_URL}/auth/register`, inputs)
             navigate("/login")
         } catch (error) {
-            if (error.status === 409) return setErrorMessage("User already exists !")
+            if (error.response?.status === 409) return setErrorMessage("User already exists !")
             return setErrorMessage("Operation failed ! Try again...")
         }
     }
