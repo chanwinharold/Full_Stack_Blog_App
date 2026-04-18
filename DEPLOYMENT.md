@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - [Render account](https://render.com)
+- [Supabase account](https://supabase.com) with a PostgreSQL database
 - Git repository with your code
 
 ## Environment Variables
@@ -12,7 +13,11 @@ Before deploying, ensure you have these environment variables ready:
 ```
 NODE_ENV=production
 PORT=3000
-DATABASE_URL=postgres://user:password@host:5432/dbname
+DB_HOST=db.xxxxxxxxxxxxxxxxxxxx.supabase.co
+DB_USER=postgres
+DB_PASSWORD=your_supabase_password
+DB_NAME=postgres
+DB_PORT=5432
 KEY_SECRET=minimum-32-character-random-string
 ALLOWED_ORIGINS=https://yourdomain.com
 ```
@@ -52,7 +57,11 @@ The `render.yaml` file in the project root defines your entire stack:
    - Start Command: `cd backend && npm start`
 3. Add environment variables:
    - `NODE_ENV=production`
-   - `DATABASE_URL` (from Render PostgreSQL)
+   - `DB_HOST` (from Supabase: Project Settings → Database → Host)
+   - `DB_USER` (postgres)
+   - `DB_PASSWORD` (your Supabase database password)
+   - `DB_NAME` (postgres)
+   - `DB_PORT` (5432)
    - `KEY_SECRET` (generate a secure key)
    - `ALLOWED_ORIGINS` (your frontend URL)
 
@@ -64,10 +73,6 @@ The `render.yaml` file in the project root defines your entire stack:
 3. Add a rewrite rule:
    - Source: `/*`
    - Destination: `/index.html`
-
-#### Database
-1. Create a PostgreSQL instance on Render (free tier)
-2. Copy the Internal Database URL to your backend environment
 
 ### 4. Initialize Database
 
@@ -88,8 +93,9 @@ Or add as a post-deploy command in Render settings.
 ## Troubleshooting
 
 ### Database Connection Failed
-- Ensure DATABASE_URL is set correctly
-- Check that PostgreSQL is fully provisioned (may take 1-2 minutes)
+- Ensure all DB_* environment variables are set correctly
+- Check that Supabase project is active and not paused
+- Verify DB_PASSWORD is correct (not your Supabase email password)
 
 ### CORS Errors
 - Add your frontend URL to `ALLOWED_ORIGINS`
@@ -99,7 +105,7 @@ Or add as a post-deploy command in Render settings.
 
 ### Uploaded Images Not Displaying
 - On Render, uploads are ephemeral and wiped on redeploy
-- Consider migrating to Cloudinary or Supabase Storage
+- Consider migrating to Supabase Storage
 
 ## Pre-Deploy Check
 

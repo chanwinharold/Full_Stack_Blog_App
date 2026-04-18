@@ -1,24 +1,16 @@
 require('dotenv').config();
 const http = require('http');
 const path = require('path');
-const { Pool } = require('pg');
 const { existsSync, mkdirSync } = require('fs');
 
 const app = require('./app');
 const config = require('./src/config');
-
-const pool = new Pool({
-  connectionString: config.DATABASE_URL,
-  ssl: config.isProduction ? { rejectUnauthorized: false } : false,
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-});
+const { pool, testConnection } = require('./config/db');
 
 async function connectWithRetry(retries = 5, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
-      await pool.query('SELECT NOW()');
+      await testConnection();
       console.log('Database connected');
       await pool.query('SET statement_timeout = 5000');
       console.log('Query timeout set to 5s');

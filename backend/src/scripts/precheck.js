@@ -8,7 +8,11 @@ const config = require('../config');
 function checkEnvVars() {
   console.log('\n=== Checking Environment Variables ===');
   const required = [
-    'DATABASE_URL',
+    'DB_HOST',
+    'DB_USER',
+    'DB_PASSWORD',
+    'DB_NAME',
+    'DB_PORT',
     'KEY_SECRET',
     'NODE_ENV',
     'ALLOWED_ORIGINS'
@@ -32,8 +36,12 @@ function checkEnvVars() {
 async function checkDatabase() {
   console.log('\n=== Checking Database Connection ===');
   const pool = new Pool({
-    connectionString: config.DATABASE_URL,
-    ssl: config.isProduction ? { rejectUnauthorized: false } : false,
+    host: config.DB_HOST,
+    user: config.DB_USER,
+    password: config.DB_PASSWORD,
+    database: config.DB_NAME,
+    port: config.DB_PORT,
+    ssl: { rejectUnauthorized: false },
   });
   
   try {

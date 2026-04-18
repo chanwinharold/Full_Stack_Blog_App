@@ -7,8 +7,12 @@ const config = require('../config');
 
 async function initDb(retries = 5, delay = 2000) {
   const pool = new Pool({
-    connectionString: config.DATABASE_URL,
-    ssl: config.isProduction ? { rejectUnauthorized: false } : false,
+    host: config.DB_HOST,
+    user: config.DB_USER,
+    password: config.DB_PASSWORD,
+    database: config.DB_NAME,
+    port: config.DB_PORT,
+    ssl: { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 5000,
