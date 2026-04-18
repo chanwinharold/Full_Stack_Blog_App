@@ -17,18 +17,21 @@ services:
         value: "5432"
       - key: DB_PASSWORD
         sync: false
+        # IMPORTANT: Set this manually in Render Dashboard → Environment
+        # Value: your Supabase database password
       - key: KEY_SECRET
         generateValue: true
       - key: ALLOWED_ORIGINS
         value: https://full-stack-blog-app-zeta.vercel.app
-      - key: PORT
-        value: 3000
 
   - type: web
     name: blog-frontend
     env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://blog-backend.onrender.com
     routes:
       - type: rewrite
         source: /*
